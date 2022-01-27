@@ -1,6 +1,8 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { User, Messages } = require('../models');
 
+//use graphql yoga
+
 const resolvers = {
     //query for messages
     Query: {
@@ -21,7 +23,7 @@ const resolvers = {
 
             return { user };
         },
-
+        //update user mutation
         updateUser: async (parent, args, context) => {
             if (context.user) {
                 return await User.findIdAndUpdate(context.user_id, args, { new: true });
