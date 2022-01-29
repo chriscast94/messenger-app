@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
-const User = require('./User');
+//const User = require('./User');
 
 //messages schema
 const messagesSchema = new Schema({
@@ -14,7 +14,9 @@ const messagesSchema = new Schema({
     messSender: {
         type: String
     },
-    messUser: [User]
+    messReciever: {
+        type: String
+    }
 
 });
 

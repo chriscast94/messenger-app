@@ -16,7 +16,8 @@ type Messages {
     messText: String!
     messTime: Float!
     messSender: String!
-    messUser: [User]
+    messReceiver: String!
+    users:[User]
 }
 
 type Mutation {
@@ -24,12 +25,20 @@ type Mutation {
     updateUser(id: ID!, name: String!): User
     deleteUser(email: String!): User
 
+    login(email: String!, password: String!): Auth
+
     createMessage(messText: String!, messSender: String!, messTime: Float!, messSender: String!): Messages
     updateMessage(id: ID!, messText: String!): Messages
     deleteMessage(messID: ID!): Messages
 }
 
-`
+type Subscription {
+    newMessage: (messReceiver: String!): Message
+    newUser: User
+    oldUser: String
+}
+
+`;
 module.exports = typeDefs;
 
 

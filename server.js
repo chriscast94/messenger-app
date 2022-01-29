@@ -1,36 +1,74 @@
-const mongoClient = require("mongodb").MongoClient;
-const express = require("express") = require("path");
-const http = require("http");
-const socketio = require("socket.io");
-const formatMessage = require("./utils/app");
-const path = require("path");
+// const mongoClient = require("mongodb").MongoClient;
+//const express = require("express")
+// const http = require("http");
+// const socketio = require("socket.io");
+// const formatMessage = require("./utils/app");
+// const path = require("path");
 
+//----------------------------------------------------------------------------------------------------------------------
+// db
+// const chatCollection = "chats";
+// const userCollection = "onlineUsers";
+// io.on("connection", (socket) => {
+//     console.log("new user logged in with ID" + socket.id);
+//     // Messages are collected and are stored into the database
+//     socket.on("chatMessage", (data) => { // gets message details from client and senders end
+//         var dataElement = formatMessage(data);
+//         mongoClient.connect(database, (err, db) => {
+//             if (err)
+//                 throw err;
+//             else {
+//                 var onlineUsers = db.db(dbname).collection(userCollection);
+//                 var chat = db.db(name).collection(chatCollection);
+//                 chat.insertOne(dataElement, (err, res) => { // puts messages into database
+//                     if (err) throw err;
+//                     socket.emit("message", dataElement); // user recieves message back for display
+//                 });
+//                 onlineUsers.findOne({ "name": data.toUser }, (err, res) => { // checks if the user of the message is online
+//                     if (err) throw err;
+//                     if (res != null) // if the user is online message will be relayed to him/her
+//                         socket.to(res.ID).emit("message", dataElement);
+//                 });
+//             }
+//             db.close();
+//         });
+//     });
+//     var userID = socket.id;
+//     socket.on("disconnect", () => {
+//         mongoClient.connect(database, function (err, db) {
+//             if (err) throw err;
+//             var onlineUsers = db.db(dbname).collection(userCollection);
+//             var myquery = { "ID": userID };
+//             // if the user has been disconnected, they will be removed from the list of collections
+//             onlineUsers.deleteOne(myquery, function (err, res) {
+//                 if (err) throw err;
+//                 console.log("User" + userID + "is Offline...");
+//                 db.close();
+//             });
+//         });
+//     });
+// });
 
-mongo.connect('mongo://127.0.0.1/messenger-app'function (err, db) {
-    if (err) {
-        throw err;
-    }
+// ----------------------------------------------------------------------------------
 
-    console.log('MongoDB connected...');
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+const port = process.env.PORT || 3000;
 
-    client.on(connection', function(socket){
-        let chat = db.collection("chats");
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
-    sendStatus = function (s) {
-        socket.emit("status", s);
-    }
-}
-    chat.find().limit(100.sort({ _id: 1 }).toArray(function (err, res) {
-    if (err) {
-        throw err;
-    }
-}
+io.on('connection', (socket) => {
+    socket.on('chat message', msg => {
+        io.emit('chat message', msg);
+    });
+});
 
-    sockit.emit(out)
-
-
-
-
-
-
-})) app. })
+http.listen(port, () => {
+    console.log(`Socket.IO server running at http://localhost:${port}/`);
+});
