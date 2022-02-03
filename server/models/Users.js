@@ -1,16 +1,12 @@
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
+const bcrypt = require('bcrypt');
 const Messages = require('./Messages');
 
 //set up user Schema
 const userSchema = new Schema({
-    firstName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    lastName: {
+    userName: {
         type: String,
         required: true,
         trim: true
@@ -19,7 +15,8 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        unique: true
+        unique: true,
+        match: [/.+@.+\..+/, 'Must match an email address!']
     },
     password: {
         type: String,
@@ -30,9 +27,19 @@ const userSchema = new Schema({
 });
 
 //set up password generator
+userSchema.pre('save', async function (next) {
+    if (this.isNew || this.isModified('password')) {
+        const saltRounds = 10;
+        this.password = await bcrypt.hash(this.password, saltRounds);
+    }
 
+    next();
+});
 
 //compare incoming password with protected password
+userSchema.methods.isCorrectPassword = async function (password) {
+    return bcrypt.compare(password, this.password);
+};
 
 const User = mongoose.model('User', userSchema);
 
