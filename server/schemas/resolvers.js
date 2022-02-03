@@ -47,10 +47,10 @@ const resolvers = {
 
         //send message awareness
 
-        // userTyping: (_, { email, receiverMail }) => {
-        //     pubsub.publish("userTyping", { userTyping: email, receiverMail });
-        //     return true;
-        // },
+        userTyping: (_, { email, receiverMail }) => {
+            pubsub.publish("userTyping", { userTyping: email, receiverMail });
+            return true;
+        },
 
         createMessage: async (
             _,
@@ -106,9 +106,15 @@ const resolvers = {
                 return pubsub.asyncIterator("oldUser");
             }
         },
-
         //send message awareness
-
+        userTyping: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("userTyping"),
+                (payload, variables) => {
+                    return payload.receiverMail === variables.receiverMail;
+                }
+            )
+        }
     }
 };
 

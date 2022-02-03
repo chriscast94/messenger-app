@@ -2,13 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { graphql, compose } from 'react-apollo';
 import TextField from '@material-ui/core/TextField';
 import moment from 'moment';
-import { USER_QUERY, MESSAGES_QUERY } from '../util/queries';
+import { MESSAGES_QUERY } from '../util/queries';
 import {
-    ADD_USER,
-    UPDATE_USER,
-    DELETE_USER,
-    ADD_USER_SUB,
-    DELETE_USER_SUB,
     CREATE_MESSAGES,
     MESSAGES_SUB
 
@@ -179,9 +174,15 @@ const Message = props => {
                 </form>
             ) : (
                 <div className="select-message">
-                    Select a logged in user from the left panel
+                    Start a conversation with a user from the left panel!
                 </div>
             )}
         </div>
     );
 };
+
+export default compose(
+    graphql(MESSAGES_QUERY, { name: 'messages' }),
+    graphql(CREATE_MESSAGES, { name: 'createMessage' }),
+    graphql(USER_TYPING_SUB, { name: 'userTyping' })
+)(Message)

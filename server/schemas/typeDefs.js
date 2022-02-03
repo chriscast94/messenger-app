@@ -27,6 +27,7 @@ type Mutation {
     createUser(userName: String!, email: String!): Users
     updateUser(id: ID!, userNName: String!): Users
     deleteUser(email: String!): Boolean
+    userTyping(email: String! receiverMail: String!): Boolean!
 
     createMessage(messText: String!, messSender: String!, messTime: Float!, messSender: String!): Messages
     updateMessages(id: ID!, messText: String!): Messages
@@ -37,6 +38,7 @@ type Subscription {
     newMessages: Messages
     newUser: Users
     oldUser: String
+    userTyping (receiverMail: String!): String
 }
 
 `;
