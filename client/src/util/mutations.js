@@ -100,3 +100,15 @@ export const MESSAGES_SUB = gql`
     }
   }
 `;
+
+export const USER_TYPING = gql`
+  mutation($email: String!, $receiverMail: String!) {
+    userTyping(email: $email, receiverMail: $receiverMail)
+  }
+`;
+
+export const USER_TYPING_SUB = gql`
+  subscription($receiverMail: String!) {
+    userTyping(receiverMail: $receiverMail)
+  }
+`;

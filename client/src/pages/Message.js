@@ -5,7 +5,9 @@ import moment from 'moment';
 import { MESSAGES_QUERY } from '../util/queries';
 import {
     CREATE_MESSAGES,
-    MESSAGES_SUB
+    MESSAGES_SUB,
+    USER_TYPING,
+    USER_TYPING_SUB
 
 } from '../util/mutations';
 import { Prev } from 'react-bootstrap/esm/PageItem';
@@ -13,7 +15,7 @@ import { Prev } from 'react-bootstrap/esm/PageItem';
 const Message = props => {
     const chatBox = useRef(null);
     const [message, setMessage] = useState('');
-    // const [userTyping, setUser] = useState('');
+    const [userTyping, setUser] = useState('');
     const [timer, setTimer] = useState(null);
 
     const handleShow = () => {
@@ -37,7 +39,7 @@ const Message = props => {
             }
         });
         props.message.subscribeToMore({
-            document: UserTypingSubscription,
+            document: USER_TYPING_SUB,
             variables: {
                 receiverMail: props.email
             },
@@ -184,5 +186,5 @@ const Message = props => {
 export default compose(
     graphql(MESSAGES_QUERY, { name: 'messages' }),
     graphql(CREATE_MESSAGES, { name: 'createMessage' }),
-    graphql(USER_TYPING_SUB, { name: 'userTyping' })
+    graphql(USER_TYPING, { name: 'userTyping' })
 )(Message)
